@@ -11,7 +11,30 @@ app.use(cors());
 const {OperationHelper} = require('apac');
 
 
-app.get("/", function(req, res) {
+app.get("/item_search", function(req, res) {
+
+  const opHelper = new OperationHelper({
+      awsId:     req.query.awsId,
+      awsSecret: req.query.awsSecret,
+      assocId:   req.query.assocId
+  });
+
+  opHelper.execute('ItemSearch', {
+    'SearchIndex': req.query.SearchIndex,
+    'Keywords': req.query.Keywords,
+    'ResponseGroup': req.query.ResponseGroup,
+    'ItemPage': req.query.ItemPage
+  }).then((response) => {
+      console.log("Results object: ", response.result);
+      console.log("Raw response body: ", response.responseBody);
+      res.send(response.result);
+  }).catch((err) => {
+      console.error("Something went wrong! ", err);
+  });
+
+});
+
+app.get("/item_lookup", function(req, res) {
 
   const opHelper = new OperationHelper({
       awsId:     req.query.awsId,
@@ -21,9 +44,10 @@ app.get("/", function(req, res) {
 
 
   var queryHash = {
-    'SearchIndex': req.query.SearchIndex,
-    'Kerywords': req.query.Keywords,
-    'ResponseGroup': req.query.ResponseGroup
+    'Operation': "ItemLookup",
+    'ResponseGroup': "Images",
+    'IdType': req.query.IdType,
+    'ItemId': req.query.ItemId,
   };
 
   opHelper.execute('ItemSearch', {
