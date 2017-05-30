@@ -31,7 +31,7 @@ app.get("/", function(req, res) {
   }).then((response) => {
       console.log("Results object: ", response.result);
       console.log("Raw response body: ", response.responseBody);
-      res.send(response.responseBody);
+      res.send(response.result);
   }).catch((err) => {
       console.error("Something went wrong! ", err);
   });
