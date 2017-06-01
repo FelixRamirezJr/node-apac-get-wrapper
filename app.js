@@ -42,17 +42,9 @@ app.get("/item_lookup", function(req, res) {
       assocId:   req.query.assocId
   });
 
-
-  var queryHash = {
-    'Operation': "ItemLookup",
-    'ResponseGroup': "Images",
+  opHelper.execute('ItemLookup', {
     'IdType': req.query.IdType,
     'ItemId': req.query.ItemId,
-  };
-
-  opHelper.execute('ItemSearch', {
-    'SearchIndex': req.query.SearchIndex,
-    'Keywords': req.query.Keywords,
     'ResponseGroup': req.query.ResponseGroup
   }).then((response) => {
       console.log("Results object: ", response.result);
